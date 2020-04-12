@@ -77,10 +77,11 @@ Plugins/*/Intermediate/*
 DerivedDataCache/*
 
 # Starter Content Ignored
-
 Content/StarterContent/*
 
-VSCode Files
+# VSCode Files
 /.vscode/*
 BuildingEscape.code-workspace
 
+# OS Files
+*.DS_Store
