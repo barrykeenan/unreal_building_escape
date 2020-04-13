@@ -41,7 +41,6 @@
 *.suo
 *.opensdf
 *.sdf
-*.VC.db
 *.VC.opendb
 
 # Precompiled Assets
@@ -76,8 +75,9 @@ Plugins/*/Intermediate/*
 # Cache files for the editor to use
 DerivedDataCache/*
 
-# Starter Content Ignored
+# Content Ignored
 Content/StarterContent/*
+RawContent/
 
 # VSCode Files
 /.vscode/*
