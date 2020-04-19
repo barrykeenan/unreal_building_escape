@@ -2,9 +2,10 @@
 
 #pragma once
 
-#include "CoreMinimal.h"
 #include "Components/ActorComponent.h"
+#include "CoreMinimal.h"
 #include "Engine/TriggerVolume.h"
+
 #include "OpenDoor.generated.h"
 
 UCLASS(ClassGroup = (Custom), meta = (BlueprintSpawnableComponent))
@@ -22,8 +23,9 @@ protected:
 
 public:
 	// Called every frame
-	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction *ThisTickFunction) override;
+	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 	void OpenDoor(float DeltaTime);
+	void CloseDoor(float DeltaTime);
 
 private:
 	FRotator InitialRotation;
@@ -32,11 +34,20 @@ private:
 	UPROPERTY(EditAnywhere)
 	FRotator TargetRotation{0.0f, 90.0f, 0.0f};
 
-	float InterpSpeed;
-
 	UPROPERTY(EditAnywhere)
 	ATriggerVolume* PressurePlate;
 
 	UPROPERTY(EditAnywhere)
 	AActor* ActorThatOpens;
+
+	float DoorLastOpened = 0.0f;
+
+	UPROPERTY(EditAnywhere)
+	float DoorClosedDelay = 0.5f;	 // secs
+
+	UPROPERTY(EditAnywhere)
+	float DoorOpenSpeed = 2.0f;
+
+	UPROPERTY(EditAnywhere)
+	float DoorCloseSpeed = 5.0f;
 };
