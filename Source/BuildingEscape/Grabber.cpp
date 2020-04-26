@@ -16,8 +16,6 @@ UGrabber::UGrabber()
 	// ticked every frame.  You can turn these features off to improve
 	// performance if you don't need them.
 	PrimaryComponentTick.bCanEverTick = true;
-
-	// ...
 }
 
 // Called when the game starts
@@ -25,14 +23,37 @@ void UGrabber::BeginPlay()
 {
 	Super::BeginPlay();
 
-	// UPhysicsHandleComponent* PhysicsHandle = nullptr;	 // don't know if PhysicsHandleComponent has initialised on owner actor
-	// yet
+	FindPhysicsHandle();
+	SetupInputComponent();
+}
 
+void UGrabber::SetupInputComponent()
+{
+	InputComponent = GetOwner()->FindComponentByClass<UInputComponent>();
+	if (InputComponent)
+	{
+		InputComponent->BindAction("Grab", IE_Pressed, this, &UGrabber::Grab);
+		InputComponent->BindAction("Grab", IE_Released, this, &UGrabber::Release);
+	}
+}
+
+void UGrabber::FindPhysicsHandle()
+{
 	PhysicsHandle = GetOwner()->FindComponentByClass<UPhysicsHandleComponent>();
 	if (!PhysicsHandle)
 	{
 		UE_LOG(LogTemp, Error, TEXT("%s has UGrabber component, but no UPhysicsHandleComponent set"), *GetOwner()->GetName());
 	}
+}
+
+void UGrabber::Grab()
+{
+	UE_LOG(LogTemp, Warning, TEXT("Grabber Pressed"));
+}
+
+void UGrabber::Release()
+{
+	UE_LOG(LogTemp, Warning, TEXT("Grabber Released"));
 }
 
 // Called every frame
