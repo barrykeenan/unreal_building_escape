@@ -40,7 +40,7 @@ void UGrabber::SetupInputComponent()
 void UGrabber::FindPhysicsHandle()
 {
 	PhysicsHandle = GetOwner()->FindComponentByClass<UPhysicsHandleComponent>();
-	if (PhysicsHandle == nullptr)
+	if (!PhysicsHandle)
 	{
 		UE_LOG(LogTemp, Error, TEXT("%s has UGrabber component, but no UPhysicsHandleComponent set"), *GetOwner()->GetName());
 	}
@@ -54,6 +54,12 @@ void UGrabber::Grab()
 
 	if (Hit.GetActor())
 	{
+		// PhysicsHandle is a pointer, accessing method (->) if null can cause crash
+		if (!PhysicsHandle)
+		{
+			return;
+		}
+
 		PhysicsHandle->GrabComponentAtLocation(ComponentToGrab, NAME_None, GetPlayersReach());
 	}
 }
