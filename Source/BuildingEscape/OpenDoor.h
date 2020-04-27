@@ -16,19 +16,24 @@ class BUILDINGESCAPE_API UOpenDoor : public UActorComponent
 public:
 	// Sets default values for this component's properties
 	UOpenDoor();
+	// Called every frame
+	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
+
+	void OpenDoor(float DeltaTime);
+	void CloseDoor(float DeltaTime);
+	float TotalMassOfActors() const;
+
+	bool OpenDoorSoundIsPlayed = false;
+	bool CloseDoorSoundIsPlayed = true;
 
 protected:
 	// Called when the game starts
 	virtual void BeginPlay() override;
 
-public:
-	// Called every frame
-	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
-	void OpenDoor(float DeltaTime);
-	void CloseDoor(float DeltaTime);
-	float TotalMassOfActors() const;
-
 private:
+	void FindPressurePlate();
+	void FindAudioComponent();
+
 	FRotator InitialRotation;
 	FRotator CurrentRotation;
 
@@ -51,4 +56,7 @@ private:
 
 	UPROPERTY(EditAnywhere)
 	float DoorCloseSpeed = 5.0f;
+
+	UPROPERTY()
+	UAudioComponent* AudioComponent = nullptr;
 };

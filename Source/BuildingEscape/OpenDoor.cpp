@@ -2,6 +2,7 @@
 
 #include "OpenDoor.h"
 
+#include "Components/AudioComponent.h"
 #include "Components/PrimitiveComponent.h"
 #include "Engine/World.h"
 #include "GameFramework/Actor.h"
@@ -29,9 +30,24 @@ void UOpenDoor::BeginPlay()
 	TargetRotation.Yaw += CurrentRotation.Yaw;
 	TargetRotation.Roll += CurrentRotation.Roll;
 
+	FindPressurePlate();
+	FindAudioComponent();
+}
+
+void UOpenDoor::FindPressurePlate()
+{
 	if (!PressurePlate)
 	{
-		UE_LOG(LogTemp, Error, TEXT("%s has OpenDoor component, but no PressurePlate set"), *GetOwner()->GetName());
+		UE_LOG(LogTemp, Error, TEXT("%s has UOpenDoor component, but no PressurePlate set"), *GetOwner()->GetName());
+	}
+}
+
+void UOpenDoor::FindAudioComponent()
+{
+	AudioComponent = GetOwner()->FindComponentByClass<UAudioComponent>();
+	if (!AudioComponent)
+	{
+		UE_LOG(LogTemp, Error, TEXT("%s has UOpenDoor component, but no UAudioComponent set"), *GetOwner()->GetName());
 	}
 }
 
@@ -61,6 +77,17 @@ void UOpenDoor::OpenDoor(float DeltaTime)
 	CurrentRotation.Roll = FMath::FInterpTo(CurrentRotation.Roll, TargetRotation.Roll, DeltaTime, DoorOpenSpeed);
 
 	GetOwner()->SetActorRotation(CurrentRotation);
+
+	CloseDoorSoundIsPlayed = false;
+	if (!AudioComponent)
+	{
+		return;
+	}
+	if (!OpenDoorSoundIsPlayed)
+	{
+		AudioComponent->Play();
+		OpenDoorSoundIsPlayed = true;
+	}
 }
 
 void UOpenDoor::CloseDoor(float DeltaTime)
@@ -70,6 +97,17 @@ void UOpenDoor::CloseDoor(float DeltaTime)
 	CurrentRotation.Roll = FMath::FInterpTo(CurrentRotation.Roll, InitialRotation.Roll, DeltaTime, DoorCloseSpeed);
 
 	GetOwner()->SetActorRotation(CurrentRotation);
+
+	OpenDoorSoundIsPlayed = false;
+	if (!AudioComponent)
+	{
+		return;
+	}
+	if (!CloseDoorSoundIsPlayed)
+	{
+		AudioComponent->Play();
+		CloseDoorSoundIsPlayed = true;
+	}
 }
 
 float UOpenDoor::TotalMassOfActors() const

@@ -26,7 +26,11 @@ protected:
 private:
 	float Reach = 100.f;
 
+	// Anything with a U in front, should have UPROPERTY macro, for unreal cleanup purposes
+	UPROPERTY()
 	UPhysicsHandleComponent* PhysicsHandle = nullptr;	 // don't know if PhysicsHandleComponent has initialised on owner actor yet
+
+	UPROPERTY()
 	UInputComponent* InputComponent = nullptr;
 
 	virtual void Grab();
