@@ -33,4 +33,8 @@ private:
 	virtual void Release();
 	virtual void FindPhysicsHandle();
 	virtual void SetupInputComponent();
+
+	FHitResult GetFirstPhysicsBodyInReach() const;
+	FVector GetPlayersWorldPosition() const;
+	FVector GetPlayersReach() const;
 };
