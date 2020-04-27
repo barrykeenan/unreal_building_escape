@@ -23,6 +23,7 @@ public:
 	void CloseDoor(float DeltaTime);
 	float TotalMassOfActors() const;
 
+	// Tracks if sound has been played
 	bool OpenDoorSoundIsPlayed = false;
 	bool CloseDoorSoundIsPlayed = true;
 
